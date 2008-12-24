@@ -19,7 +19,28 @@ class sfOpenPNEAuthForm_OpenID extends sfOpenPNEAuthForm
       'callback'  => array($this, 'handleRequest'),
     )));
 
+    $this->mergePostValidator(new sfValidatorCallback(array(
+      'callback'  => array($this, 'validateId'),
+    )));
+
     parent::configure();
+  }
+
+  public function validateId($validator, $value, $arguments = array())
+  {
+    $data = MemberConfigPeer::retrieveByNameAndValue('openid', $value['id']);
+    if ($data)
+    {
+      $member = $data->getMember();
+    }
+    else
+    {
+      $member = MemberPeer::createPre();
+      $member->setConfig('openid', $value['id']);
+    }
+
+    $value['member_id'] = $member->getId();
+    return $value;
   }
 
   public function handleRequest($validator, $value, $arguments = array())

@@ -12,24 +12,6 @@ class sfOpenPNEAuthContainer_OpenID extends sfOpenPNEAuthContainer
   protected
     $authModuleName = 'OpenID';
 
-  public function fetchData($form)
-  {
-    $id = $form->getValue('id');
-
-    $memberConfig = MemberConfigPeer::retrieveByNameAndValue('openid', $id);
-    if ($memberConfig)
-    {
-      $member = $memberConfig->getMember();
-    }
-    else
-    {
-      $member = MemberPeer::createPre();
-      $member->setConfig('openid', $id);
-    }
-
-    return $member->getId();
-  }
-
   public function registerData($memberId, $form)
   {
     $member = MemberPeer::retrieveByPk($memberId);
