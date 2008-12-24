@@ -1,13 +1,13 @@
 <?php
 
 /**
- * sfOpenPNEAuthContainer_OpenID will handle authentication for OpenPNE by OpenID
+ * opAuthAdapterOpenID will handle authentication for OpenPNE by OpenID
  *
  * @package    OpenPNE
  * @subpackage user
  * @author     Kousuke Ebihara <ebihara@tejimaya.com>
  */
-class sfOpenPNEAuthContainer_OpenID extends sfOpenPNEAuthContainer
+class opAuthAdapterOpenID extends opAuthAdapter
 {
   protected
     $authModuleName = 'OpenID';
