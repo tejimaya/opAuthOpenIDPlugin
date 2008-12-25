@@ -13,62 +13,26 @@ class sfOpenPNEAuthForm_OpenID extends sfOpenPNEAuthForm
   {
     $this->setWidget('openid_identifier', new sfWidgetFormInput());
     $this->setValidator('openid_identifier', new sfValidatorString(array('required' => false)));
+    $this->setValidator('openid', new sfValidatorString(array('required' => false)));
     $this->widgetSchema->setLabel('openid_identifier', 'OpenID');
 
-    $this->mergePostValidator(new sfValidatorCallback(array(
-      'callback'  => array($this, 'handleRequest'),
-    )));
-
-    $this->mergePostValidator(new sfValidatorCallback(array(
-      'callback'  => array($this, 'validateId'),
+    $this->mergePostValidator(new sfValidatorOr(array(
+      new opAuthValidatorMemberConfig(array('config_name' => 'openid')),
+      new sfValidatorCallback(array(
+        'callback' => array($this, 'validateIdentifier'),
+        'arguments' => array(
+          'realm' => $this->getAuthAdapter()->getCurrentUrl(),
+          'return_to' => $this->getAuthAdapter()->getCurrentUrl(),
+        ),
+      ))
     )));
 
     parent::configure();
   }
 
-  public function validateId($validator, $value, $arguments = array())
+  public function validateIdentifier($validator, $values, $arguments = array())
   {
-    $data = MemberConfigPeer::retrieveByNameAndValue('openid', $value['id']);
-    if ($data)
-    {
-      $member = $data->getMember();
-    }
-    else
-    {
-      $member = MemberPeer::createPre();
-      $member->setConfig('openid', $value['id']);
-    }
-
-    $value['member_id'] = $member->getId();
-    return $value;
-  }
-
-  public function handleRequest($validator, $value, $arguments = array())
-  {
-    $this->registerJanRainOpenID();
-    $consumer = new Auth_OpenID_Consumer(new Auth_OpenID_FileStore(sfConfig::get('sf_cache_dir')));
-    $currentURL = sfContext::getInstance()->getRequest()->getUri();
-
-    if (isset($_GET['openid_mode']))
-    {
-      $response = $consumer->complete($currentURL);
-
-      if ($response->status === Auth_OpenID_CANCEL)
-      {
-        throw new sfValidatorError($validator, 'Verification cancelled.');
-      }
-      elseif ($response->status === Auth_OpenID_FAILURE)
-      {
-        throw new sfValidatorError($validator, 'Authentication failed: '.$response->message);
-      }
-      elseif ($response->status === Auth_OpenID_SUCCESS)
-      {
-        $value['id'] = $response->getDisplayIdentifier();
-        return $value;
-      }
-    }
-
-    $authRequest = $consumer->begin($value['openid_identifier']);
+    $authRequest = $this->getAuthAdapter()->getConsumer()->begin($values['openid_identifier']);
     if (!$authRequest)
     {
       throw new sfValidatorError($validator, 'Authentication error: not a valid OpenID.');
@@ -77,29 +41,33 @@ class sfOpenPNEAuthForm_OpenID extends sfOpenPNEAuthForm
     // for OpenID1
     if ($authRequest->shouldSendRedirect())
     {
-      $toUrl = $authRequest->redirectURL($currentURL, $currentURL);
-      if (Auth_OpenID::isFailure($toUrl))
+      $values['redirect_url'] = $authRequest->redirectURL($arguments['realm'], $arguments['return_to']);
+      if (Auth_OpenID::isFailure($values['redirect_url']))
       {
-        throw new sfValidatorError($validator, 'Could not redirect to the server: '.$toUrl->message);
-      }
-      else
-      {
-        header('Location: '.$toUrl);
-        exit;
+        throw new sfValidatorError($validator, 'Could not redirect to the server: '.$values['redirect_url']->message);
       }
     }
-
     // for OpenID2
-    $formHTML = $authRequest->htmlMarkup($currentURL, $currentURL);
-    if (Auth_OpenID::isFailure($formHTML))
+    else
     {
-      throw new sfValidatorError($validator, 'Could not redirect to the server: '.$formHTML->message);
+      $values['redirect_html'] = $authRequest->htmlMarkup($arguments['realm'], $arguments['return_to']);
+      if (Auth_OpenID::isFailure($values['redirect_html']))
+      {
+        throw new sfValidatorError($validator, 'Could not redirect to the server: '.$values['redirect_html']->message);
+      }
     }
 
-    // We got a valid HTML contains JavaScript to redirect to the OpenID provider's site.
-    // This HTML must not include any contents from symfony, so this script will stop here.
-    echo $formHTML;
-    exit;
+    return $values;
+  }
+
+  public function getRedirectHtml()
+  {
+    return $this->getValue('redirect_html');
+  }
+
+  public function getRedirectUrl()
+  {
+    return $this->getValue('redirect_url');
   }
 
   public function setForRegisterWidgets($member = null)
@@ -112,16 +80,5 @@ class sfOpenPNEAuthForm_OpenID extends sfOpenPNEAuthForm
   public function getAuthMode()
   {
     return 'OpenID';
-  }
-
-  public function registerJanRainOpenID()
-  {
-    $DS = DIRECTORY_SEPARATOR;
-    $openidPath = sfConfig::get('sf_lib_dir').$DS.'vendor'.$DS.'php-openid'.$DS;  // ##PROJECT_LIB_DIR##/vendor/php-openid/
-    set_include_path($openidPath.PATH_SEPARATOR.get_include_path());
-
-    require_once 'Auth/OpenID/Consumer.php';
-    require_once 'Auth/OpenID/FileStore.php';
-    require_once 'Auth/OpenID/SReg.php';
   }
 }
