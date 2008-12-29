@@ -15,7 +15,7 @@ class opAuthAdapterOpenID extends opAuthAdapter
 
   public function configure()
   {
-    $this->registerJanRainOpenID();
+    sfOpenPNEApplicationConfiguration::registerJanRainOpenID();
   }
 
   public function getConsumer()
@@ -100,16 +100,5 @@ class opAuthAdapterOpenID extends opAuthAdapter
   public function isRegisterFinish($member_id = null)
   {
     return false;
-  }
-
-  protected function registerJanRainOpenID()
-  {
-    $DS = DIRECTORY_SEPARATOR;
-    $openidPath = sfConfig::get('sf_lib_dir').$DS.'vendor'.$DS.'php-openid'.$DS;  // ##PROJECT_LIB_DIR##/vendor/php-openid/
-    set_include_path($openidPath.PATH_SEPARATOR.get_include_path());
-
-    require_once 'Auth/OpenID/Consumer.php';
-    require_once 'Auth/OpenID/FileStore.php';
-    require_once 'Auth/OpenID/SReg.php';
   }
 }
