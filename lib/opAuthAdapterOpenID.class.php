@@ -63,6 +63,16 @@ class opAuthAdapterOpenID extends opAuthAdapter
       exit;
     }
 
+    if ($this->getAuthForm()->isValid()
+      && $this->getAuthForm()->getValue('openid')
+      && !$this->getAuthForm()->getMember())
+    {
+      $member = MemberPeer::createPre();
+      $member->setConfig('openid', $this->getAuthForm()->getValue('openid'));
+      $member->save();
+      $result = $member->getId();
+    }
+
     return $result;
   }
 

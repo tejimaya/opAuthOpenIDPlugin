@@ -16,18 +16,28 @@ class sfOpenPNEAuthForm_OpenID extends sfOpenPNEAuthForm
     $this->setValidator('openid', new sfValidatorString(array('required' => false)));
     $this->widgetSchema->setLabel('openid_identifier', 'OpenID');
 
-    $this->mergePostValidator(new sfValidatorOr(array(
-      new opAuthValidatorMemberConfig(array('config_name' => 'openid')),
-      new sfValidatorCallback(array(
-        'callback' => array($this, 'validateIdentifier'),
-        'arguments' => array(
-          'realm' => $this->getAuthAdapter()->getCurrentUrl(),
-          'return_to' => $this->getAuthAdapter()->getCurrentUrl(),
-        ),
-      ))
+    $this->mergePostValidator(new sfValidatorCallback(array(
+      'callback' => array($this, 'validate'),
+      'arguments' => array(
+        'realm' => $this->getAuthAdapter()->getCurrentUrl(),
+        'return_to' => $this->getAuthAdapter()->getCurrentUrl(),
+      ),
     )));
 
     parent::configure();
+  }
+
+  public function validate($validator, $values, $arguments = array())
+  {
+    if (!empty($values['openid']))
+    {
+      $validator = new opAuthValidatorMemberConfig(array('config_name' => 'openid'));
+      $result = $validator->clean($values);
+      return $result;
+    }
+
+    $result = $this->validateIdentifier($validator, $values, $arguments);
+    return $result;
   }
 
   public function validateIdentifier($validator, $values, $arguments = array())
