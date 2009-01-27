@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.7.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+    http://pear.php.net/dtd/tasks-1.0.xsd
+    http://pear.php.net/dtd/package-2.0
+    http://pear.php.net/dtd/package-2.0.xsd">
+ <name>opAuthOpenIDPlugin</name>
+ <channel>plugins.openpne.jp</channel>
+ <summary> </summary>
+ <description> </description>
+ <lead>
+  <name />
+  <user />
+  <email>maintainer@example.com</email>
+  <active>yes</active>
+ </lead>
+ <date>2009-01-27</date>
+ <time>08:16:56</time>
+ <version>
+  <release>0.5.0</release>
+  <api>0.5.0</api>
+ </version>
+ <stability>
+  <release>beta</release>
+  <api>beta</api>
+ </stability>
+ <license>Apache 2.0</license>
+ <notes>First release</notes>
+ <contents>
+  <dir baseinstalldir="/" name="/">
+   <file baseinstalldir="/" md5sum="152d31fbc8dbcc7157a204e11cc19cab" name="apps/pc_backend/modules/opAuthOpenIDPlugin/actions/actions.class.php" role="php" />
+   <file baseinstalldir="/" md5sum="a5833e4662ff604fd774ab62c6befabf" name="apps/pc_backend/modules/opAuthOpenIDPlugin/templates/indexSuccess.php" role="php" />
+   <file baseinstalldir="/" md5sum="f0090a0bb8d09152c997b17f7e10729a" name="apps/pc_frontend/modules/OpenID/actions/registerEndAction.class.php" role="php" />
+   <file baseinstalldir="/" md5sum="24d53acaac8e853082c7f1dcc94f9f04" name="config/auth.yml" role="data" />
+   <file baseinstalldir="/" md5sum="6c5971ebcea378acddf85ea5b3b734a6" name="lib/opAuthAdapterOpenID.class.php" role="php" />
+   <file baseinstalldir="/" md5sum="bdd5e68ee9141354c0f2ed597e2e0b05" name="lib/opAuthConfigFormOpenID.class.php" role="php" />
+   <file baseinstalldir="/" md5sum="499f19fd9cdf47c71796e96b238ad7a8" name="lib/opAuthLoginFormOpenID.class.php" role="php" />
+   <file baseinstalldir="/" md5sum="fda79a06b1c25f0a3408e3216ee69ff8" name="lib/opAuthRegisterFormOpenID.class.php" role="php" />
+   <file baseinstalldir="/" md5sum="3b83ef96387f14655fc854ddc3c6bd57" name="LICENSE" role="data" />
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.2.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0</min>
+   </pearinstaller>
+   <package>
+    <name>symfony</name>
+    <channel>pear.symfony-project.com</channel>
+    <min>1.2.0</min>
+   </package>
+  </required>
+ </dependencies>
+ <phprelease />
+ <changelog>
+  <release>
+   <version>
+    <release>0.5.0</release>
+    <api>0.5.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2009-01-27</date>
+   <license>Apache 2.0</license>
+   <notes>First release</notes>
+  </release>
+ </changelog>
+</package>
