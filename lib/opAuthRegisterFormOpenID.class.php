@@ -20,6 +20,8 @@ class opAuthRegisterFormOpenID extends opAuthRegisterForm
   public function doSave()
   {
     $this->getMember()->setIsActive(true);
-    return $this->getMember()->save();
+    $this->getMember()->save();
+
+    return $this->getMember();
   }
 }

@@ -75,7 +75,7 @@ class opAuthAdapterOpenID extends opAuthAdapter
       && $this->getAuthForm()->getValue('openid')
       && !$this->getAuthForm()->getMember())
     {
-      $member = MemberPeer::createPre();
+      $member = Doctrine::getTable('Member')->createPre();
       $member->setConfig('openid', $this->getAuthForm()->getValue('openid'));
       $member->save();
       $result = $member->getId();
@@ -91,7 +91,7 @@ class opAuthAdapterOpenID extends opAuthAdapter
 
   public function registerData($memberId, $form)
   {
-    $member = MemberPeer::retrieveByPk($memberId);
+    $member = Doctrine::getTable('Member')->find($memberId);
     if (!$member)
     {
       return false;
@@ -104,7 +104,7 @@ class opAuthAdapterOpenID extends opAuthAdapter
   public function isRegisterBegin($member_id = null)
   {
     opActivateBehavior::disable();
-    $member = MemberPeer::retrieveByPk((int)$member_id);
+    $member = Doctrine::getTable('Member')->find((int)$member_id);
     opActivateBehavior::enable();
 
     if (!$member || $member->getIsActive())
