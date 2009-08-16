@@ -19,11 +19,15 @@ class opAuthAdapterOpenID extends opAuthAdapter
 {
   protected
     $authModuleName = 'OpenID',
-    $consumer = null;
+    $consumer = null,
+    $response = null;
 
   public function configure()
   {
     sfOpenPNEApplicationConfiguration::registerJanRainOpenID();
+
+    require_once 'Auth/OpenID/SReg.php';
+    require_once 'Auth/OpenID/AX.php';
   }
 
   public function getConsumer()
@@ -35,6 +39,20 @@ class opAuthAdapterOpenID extends opAuthAdapter
     return $this->consumer;
   }
 
+  public function getResponse()
+  {
+    if (!$this->response)
+    {
+      $response = $this->getConsumer()->complete($this->getCurrentUrl());
+      if ($response->status === Auth_OpenID_SUCCESS)
+      {
+        $this->response = $response;
+      }
+    }
+
+    return $this->response;
+  }
+
   public function getAuthParameters()
   {
     $params = parent::getAuthParameters();
@@ -42,10 +60,9 @@ class opAuthAdapterOpenID extends opAuthAdapter
 
     if (isset($_GET['openid_mode']))
     {
-      $response = $this->getConsumer()->complete($this->getCurrentUrl());
-      if ($response->status === Auth_OpenID_SUCCESS)
+      if ($this->getResponse())
       {
-        $openid = $response->getDisplayIdentifier();
+        $openid = $this->getResponse()->getDisplayIdentifier();
       }
     }
 
@@ -77,7 +94,10 @@ class opAuthAdapterOpenID extends opAuthAdapter
     {
       $member = Doctrine::getTable('Member')->createPre();
       $member->setConfig('openid', $this->getAuthForm()->getValue('openid'));
+      $this->appendMemberInformationFromProvider($member);
+
       $member->save();
+
       $result = $member->getId();
     }
 
@@ -118,5 +138,38 @@ class opAuthAdapterOpenID extends opAuthAdapter
   public function isRegisterFinish($member_id = null)
   {
     return false;
+  }
+
+  protected function appendMemberInformationFromProvider($member)
+  {
+    $ax = Auth_OpenID_AX_FetchResponse::fromSuccessResponse($this->getResponse());
+    if ($ax)
+    {
+      return $this->appendMemberInformationByAX($member, $ax);
+    }
+
+    $sreg = Auth_OpenID_SRegResponse::fromSuccessResponse($this->getResponse());
+    if ($sreg)
+    {
+      return $this->appendMemberInformationBySReg($member, $sreg);
+    }
+  }
+
+  protected function appendMemberInformationByAX($member, $ax)
+  {
+    $member->setName(array_shift($ax->get('http://schema.openid.net/namePerson/friendly')));
+
+    return $member;
+  }
+
+  protected function appendMemberInformationBySReg($member, $sreg)
+  {
+    $data = $sreg->contents();
+    if (!empty($data['nickname']))
+    {
+      $member->setName($data['nickname']);
+    }
+
+    return $member;
   }
 }

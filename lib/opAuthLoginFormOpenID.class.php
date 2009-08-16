@@ -68,6 +68,14 @@ class opAuthLoginFormOpenID extends opAuthLoginForm
     // for OpenID2
     else
     {
+      $authRequest->addExtension(Auth_OpenID_SRegRequest::build(
+        array(), array('nickname')
+      ));
+
+      $axRequest = new Auth_OpenID_AX_FetchRequest();
+      $axRequest->add(Auth_OpenID_AX_AttrInfo::make('http://schema.openid.net/namePerson/friendly', 1, false, 'nickname'));
+      $authRequest->addExtension($axRequest);
+
       $values['redirect_html'] = $authRequest->htmlMarkup($arguments['realm'], $arguments['return_to']);
       if (Auth_OpenID::isFailure($values['redirect_html']))
       {
