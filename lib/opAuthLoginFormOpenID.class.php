@@ -56,6 +56,10 @@ class opAuthLoginFormOpenID extends opAuthLoginForm
       throw new sfValidatorError($validator, 'Authentication error: not a valid OpenID.');
     }
 
+    $authRequest->addExtension(Auth_OpenID_SRegRequest::build(
+      array(), array('nickname')
+    ));
+
     // for OpenID1
     if ($authRequest->shouldSendRedirect())
     {
@@ -68,10 +72,6 @@ class opAuthLoginFormOpenID extends opAuthLoginForm
     // for OpenID2
     else
     {
-      $authRequest->addExtension(Auth_OpenID_SRegRequest::build(
-        array(), array('nickname')
-      ));
-
       $axRequest = new Auth_OpenID_AX_FetchRequest();
       $axRequest->add(Auth_OpenID_AX_AttrInfo::make('http://schema.openid.net/namePerson/friendly', 1, false, 'nickname'));
       $authRequest->addExtension($axRequest);
