@@ -58,7 +58,7 @@ class opAuthAdapterOpenID extends opAuthAdapter
     $params = parent::getAuthParameters();
     $openid = null;
 
-    if (isset($_GET['openid_mode']))
+    if (sfContext::getInstance()->getRequest()->hasParameter('openid_mode'))
     {
       if ($this->getResponse())
       {
@@ -145,29 +145,15 @@ class opAuthAdapterOpenID extends opAuthAdapter
     $ax = Auth_OpenID_AX_FetchResponse::fromSuccessResponse($this->getResponse());
     if ($ax)
     {
-      return $this->appendMemberInformationByAX($member, $ax);
+      $axExchange = new opOpenIDProfileExchange('ax', $member);
+      $axExchange->setData($ax->data);
     }
 
     $sreg = Auth_OpenID_SRegResponse::fromSuccessResponse($this->getResponse());
     if ($sreg)
     {
-      return $this->appendMemberInformationBySReg($member, $sreg);
-    }
-  }
-
-  protected function appendMemberInformationByAX($member, $ax)
-  {
-    $member->setName(array_shift($ax->get('http://schema.openid.net/namePerson/friendly')));
-
-    return $member;
-  }
-
-  protected function appendMemberInformationBySReg($member, $sreg)
-  {
-    $data = $sreg->contents();
-    if (!empty($data['nickname']))
-    {
-      $member->setName($data['nickname']);
+      $sregExchange = new opOpenIDProfileExchange('sreg', $member);
+      $sregExchange->setData($sreg->contents());
     }
 
     return $member;
