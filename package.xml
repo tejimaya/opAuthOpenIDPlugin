@@ -13,27 +13,27 @@
   <email />
   <active>yes</active>
  </lead>
- <date>2009-07-22</date>
- <time>10:22:30</time>
+ <date>2009-09-03</date>
+ <time>12:34:29</time>
  <version>
-  <release>1.1.0</release>
-  <api>1.1.0</api>
+  <release>1.1.1</release>
+  <api>1.1.1</api>
  </version>
  <stability>
-  <release>stable</release>
-  <api>stable</api>
+  <release>beta</release>
+  <api>beta</api>
  </stability>
  <license>apache</license>
- <notes>Deal with Doctrine</notes>
+ <notes>Added ability to exchange profiles by OpenID AX and OpenID SREG</notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <file baseinstalldir="/" md5sum="152d31fbc8dbcc7157a204e11cc19cab" name="apps/pc_backend/modules/opAuthOpenIDPlugin/actions/actions.class.php" role="data" />
    <file baseinstalldir="/" md5sum="a5833e4662ff604fd774ab62c6befabf" name="apps/pc_backend/modules/opAuthOpenIDPlugin/templates/indexSuccess.php" role="data" />
    <file baseinstalldir="/" md5sum="f0090a0bb8d09152c997b17f7e10729a" name="apps/pc_frontend/modules/OpenID/actions/registerEndAction.class.php" role="data" />
    <file baseinstalldir="/" md5sum="24d53acaac8e853082c7f1dcc94f9f04" name="config/auth.yml" role="data" />
-   <file baseinstalldir="/" md5sum="a4491bd67d03f4a3fed61f6bff2fefb6" name="lib/opAuthAdapterOpenID.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="2a8d3959722dc301b7c032fd86916008" name="lib/opAuthAdapterOpenID.class.php" role="data" />
    <file baseinstalldir="/" md5sum="bdd5e68ee9141354c0f2ed597e2e0b05" name="lib/opAuthConfigFormOpenID.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="499f19fd9cdf47c71796e96b238ad7a8" name="lib/opAuthLoginFormOpenID.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="aef15308dce3f0190172689a5c1c444d" name="lib/opAuthLoginFormOpenID.class.php" role="data" />
    <file baseinstalldir="/" md5sum="ce0ca91e4ce6defd9d73701cf6f987fd" name="lib/opAuthRegisterFormOpenID.class.php" role="data" />
    <file baseinstalldir="/" md5sum="3b83ef96387f14655fc854ddc3c6bd57" name="LICENSE" role="data" />
   </dir>
@@ -80,6 +80,19 @@
    <date>2009-07-22</date>
    <license>apache</license>
    <notes>Deal with Doctrine</notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.1</release>
+    <api>1.1.1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2009-09-03</date>
+   <license>apache</license>
+   <notes>Added ability to exchange profiles by OpenID AX and OpenID SREG</notes>
   </release>
  </changelog>
 </package>
