@@ -98,6 +98,8 @@ class opAuthAdapterOpenID extends opAuthAdapter
 
       $member->save();
 
+      $member->generateRegisterToken();
+
       $result = $member->getId();
     }
 

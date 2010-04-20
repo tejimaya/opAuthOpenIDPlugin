@@ -41,6 +41,7 @@ class opAuthLoginFormOpenID extends opAuthLoginForm
     {
       $validator = new opAuthValidatorMemberConfig(array('config_name' => 'openid'));
       $result = $validator->clean($values);
+
       return $result;
     }
 
