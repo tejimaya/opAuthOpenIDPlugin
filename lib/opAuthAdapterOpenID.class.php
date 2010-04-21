@@ -90,7 +90,8 @@ class opAuthAdapterOpenID extends opAuthAdapter
 
     if ($this->getAuthForm()->isValid()
       && $this->getAuthForm()->getValue('openid')
-      && !$this->getAuthForm()->getMember())
+      && !$this->getAuthForm()->getMember()
+      && $this->getAuthConfig('invite_mode') >= 2)
     {
       $member = Doctrine::getTable('Member')->createPre();
       $member->setConfig('openid', $this->getAuthForm()->getValue('openid'));
