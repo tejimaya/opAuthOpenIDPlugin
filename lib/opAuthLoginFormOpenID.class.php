@@ -27,12 +27,20 @@ class opAuthLoginFormOpenID extends opAuthLoginForm
     $this->mergePostValidator(new sfValidatorCallback(array(
       'callback' => array($this, 'validate'),
       'arguments' => array(
-        'realm' => $this->getAuthAdapter()->getCurrentUrl(),
-        'return_to' => $this->getAuthAdapter()->getCurrentUrl(),
+        'realm' => $this->genRedirectedUrl(),
+        'return_to' => $this->genRedirectedUrl(),
       ),
     )));
 
     parent::configure();
+  }
+
+  public function genRedirectedUrl()
+  {
+    $token = sfContext::getInstance()->getRequest()->getParameter('token');
+
+    return sfContext::getInstance()->getController()
+      ->genUrl('member/login?authMode=OpenID&token='.$token, true);
   }
 
   public function validate($validator, $values, $arguments = array())
