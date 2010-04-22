@@ -102,10 +102,11 @@ class opAuthAdapterOpenID extends opAuthAdapter
 
     if ($this->getAuthForm()->isValid()
       && $this->getAuthForm()->getValue('openid')
+      && !$result
       && $this->isRegisterable())
     {
       $member = $context->getUser()->getMember(true);
-      if (!$member)
+      if (!$member || !$member->getId())
       {
         $member = Doctrine::getTable('Member')->createPre();
         $member->generateRegisterToken();
