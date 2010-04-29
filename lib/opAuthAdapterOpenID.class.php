@@ -68,12 +68,24 @@ class opAuthAdapterOpenID extends opAuthAdapter
 
     $params['openid'] = $openid;
 
+    if (empty($params['next_uri']))
+    {
+      $params['next_uri'] = '@homepage';
+    }
+
     return $params;
   }
 
   public function authenticate()
   {
     $result = parent::authenticate();
+
+    $context = sfContext::getInstance();
+
+    if ($context->getRequest()->hasParameter('token'))
+    {
+      $context->getUser()->setRegisterToken($context->getRequest()->getParameter('token'));
+    }
 
     if ($this->getAuthForm()->getRedirectHtml())
     {
@@ -90,9 +102,16 @@ class opAuthAdapterOpenID extends opAuthAdapter
 
     if ($this->getAuthForm()->isValid()
       && $this->getAuthForm()->getValue('openid')
-      && !$this->getAuthForm()->getMember())
+      && !$result
+      && $this->isRegisterable())
     {
-      $member = Doctrine::getTable('Member')->createPre();
+      $member = $context->getUser()->getMember(true);
+      if (!$member || !$member->getId())
+      {
+        $member = Doctrine::getTable('Member')->createPre();
+        $member->generateRegisterToken();
+      }
+
       $member->setConfig('openid', $this->getAuthForm()->getValue('openid'));
       $this->appendMemberInformationFromProvider($member);
 
@@ -157,5 +176,12 @@ class opAuthAdapterOpenID extends opAuthAdapter
     }
 
     return $member;
+  }
+
+  public function isRegisterable()
+  {
+    return ($this->getAuthConfig('invite_mode') >= 2
+      || ($this->getAuthConfig('invite_mode') >= 1 && sfContext::getInstance()->getUser()->isInvited())
+    );
   }
 }
