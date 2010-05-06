@@ -2,6 +2,6 @@
   'title'  => 'OpenID で登録する',
   'body'   => '使用したい OpenID を入力し、ボタンをクリックしてください。',
   'button' => 'この OpenID を使用して登録する',
-  'url'    => url_for('member/login?authMode=OpenID&token='.$sf_user->getCurrentMemberRegisterToken()),
+  'url'    => url_for('OpenID/registerOpenIDConfirm?authMode=OpenID&token='.$sf_user->getCurrentMemberRegisterToken()),
 ));
 ?>

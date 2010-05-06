@@ -37,10 +37,15 @@ class opAuthLoginFormOpenID extends opAuthLoginForm
 
   public function genRedirectedUrl()
   {
-    $token = sfContext::getInstance()->getRequest()->getParameter('token');
+    $url = 'member/login?authMode=OpenID';
 
-    return sfContext::getInstance()->getController()
-      ->genUrl('member/login?authMode=OpenID&token='.$token, true);
+    $token = sfContext::getInstance()->getRequest()->getParameter('token');
+    if ($token)
+    {
+      $url = 'OpenID/registerOpenIDConfirm?authMode=OpenID&token='.$token;
+    }
+
+    return sfContext::getInstance()->getController()->genUrl($url, true);
   }
 
   public function validate($validator, $values, $arguments = array())
