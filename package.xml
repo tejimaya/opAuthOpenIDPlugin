@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.7.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+<package packagerversion="1.9.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
     http://pear.php.net/dtd/tasks-1.0.xsd
     http://pear.php.net/dtd/package-2.0
     http://pear.php.net/dtd/package-2.0.xsd">
@@ -13,28 +13,34 @@
   <email />
   <active>yes</active>
  </lead>
- <date>2009-09-03</date>
- <time>12:34:29</time>
+ <date>2010-05-10</date>
+ <time>12:12:08</time>
  <version>
-  <release>1.1.1</release>
-  <api>1.1.1</api>
+  <release>1.3.0</release>
+  <api>1.3.0</api>
  </version>
  <stability>
   <release>beta</release>
   <api>beta</api>
  </stability>
  <license>apache</license>
- <notes>Added ability to exchange profiles by OpenID AX and OpenID SREG</notes>
+ <notes>
+added supports for new authentication interfaces
+ </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <file baseinstalldir="/" md5sum="152d31fbc8dbcc7157a204e11cc19cab" name="apps/pc_backend/modules/opAuthOpenIDPlugin/actions/actions.class.php" role="data" />
    <file baseinstalldir="/" md5sum="a5833e4662ff604fd774ab62c6befabf" name="apps/pc_backend/modules/opAuthOpenIDPlugin/templates/indexSuccess.php" role="data" />
+   <file baseinstalldir="/" md5sum="6f90ffb4d98b9d9de898caabbce3eae6" name="apps/pc_frontend/modules/OpenID/actions/registerBoxComponent.class.php" role="data" />
    <file baseinstalldir="/" md5sum="f0090a0bb8d09152c997b17f7e10729a" name="apps/pc_frontend/modules/OpenID/actions/registerEndAction.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="24d53acaac8e853082c7f1dcc94f9f04" name="config/auth.yml" role="data" />
-   <file baseinstalldir="/" md5sum="2a8d3959722dc301b7c032fd86916008" name="lib/opAuthAdapterOpenID.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="55ba423d4f0084e2fa419231c42bef9a" name="apps/pc_frontend/modules/OpenID/actions/registerOpenIDConfirmAction.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="a315a1d8aa9b9d1eb40700f963a881f7" name="apps/pc_frontend/modules/OpenID/templates/_registerBox.php" role="data" />
+   <file baseinstalldir="/" md5sum="1e2934b6bcd675539045262bdcc821f1" name="config/auth.yml" role="data" />
+   <file baseinstalldir="/" md5sum="20fa36cfc58fecc4eba6379ae6054cd6" name="lib/opAuthAdapterOpenID.class.php" role="data" />
    <file baseinstalldir="/" md5sum="bdd5e68ee9141354c0f2ed597e2e0b05" name="lib/opAuthConfigFormOpenID.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="aef15308dce3f0190172689a5c1c444d" name="lib/opAuthLoginFormOpenID.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="e24ea265718aa78294762b8f08832400" name="lib/opAuthLoginFormOpenID.class.php" role="data" />
    <file baseinstalldir="/" md5sum="ce0ca91e4ce6defd9d73701cf6f987fd" name="lib/opAuthRegisterFormOpenID.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="d1eb6b6723ed178f297879c60342192a" name="dependencies.yml" role="data" />
    <file baseinstalldir="/" md5sum="3b83ef96387f14655fc854ddc3c6bd57" name="LICENSE" role="data" />
   </dir>
  </contents>
@@ -47,9 +53,9 @@
     <min>1.4.0</min>
    </pearinstaller>
    <package>
-    <name>symfony</name>
-    <channel>pear.symfony-project.com</channel>
-    <min>1.2.0</min>
+    <name>openpne</name>
+    <channel>plugins.openpne.jp</channel>
+    <min>3.5.2dev</min>
    </package>
   </required>
  </dependencies>
@@ -66,7 +72,9 @@
    </stability>
    <date>2009-02-05</date>
    <license>Apache</license>
-   <notes>First release</notes>
+   <notes>
+First release
+   </notes>
   </release>
   <release>
    <version>
@@ -79,7 +87,9 @@
    </stability>
    <date>2009-07-22</date>
    <license>apache</license>
-   <notes>Deal with Doctrine</notes>
+   <notes>
+Deal with Doctrine
+   </notes>
   </release>
   <release>
    <version>
@@ -92,7 +102,24 @@
    </stability>
    <date>2009-09-03</date>
    <license>apache</license>
-   <notes>Added ability to exchange profiles by OpenID AX and OpenID SREG</notes>
+   <notes>
+Added ability to exchange profiles by OpenID AX and OpenID SREG
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.3.0</release>
+    <api>1.3.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2010-05-10</date>
+   <license>apache</license>
+   <notes>
+version 1.3.0 (it depends on OpenPNE 3.5.0 / version 1.2.0 is skipped)
+   </notes>
   </release>
  </changelog>
 </package>
