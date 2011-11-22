@@ -25,9 +25,6 @@ class opAuthAdapterOpenID extends opAuthAdapter
   public function configure()
   {
     sfOpenPNEApplicationConfiguration::registerJanRainOpenID();
-
-    require_once 'Auth/OpenID/SReg.php';
-    require_once 'Auth/OpenID/AX.php';
   }
 
   public function getConsumer()
