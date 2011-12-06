@@ -15,10 +15,10 @@ class RegisterOpenIDConfirmAction extends sfAction
     $this->forward404Unless($request->hasParameter('authMode'));
     $this->getUser()->setCurrentAuthMode('OpenID');
 
+    $this->redirectIf($this->getUser()->isRegisterBegin(), $this->getUser()->getRegisterInputAction());
+    $this->redirectIf($this->getUser()->isRegisterFinish(), $this->getUser()->getRegisterEndAction());
     if ($uri = $this->getUser()->login())
     {
-      $this->redirectIf($this->getUser()->isRegisterBegin(), $this->getUser()->getRegisterInputAction());
-      $this->redirectIf($this->getUser()->isRegisterFinish(), $this->getUser()->getRegisterEndAction());
       $this->redirectIf($this->getUser()->isMember(), $uri);
     }
 
